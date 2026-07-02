@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BoostFit — Train Hard. Fuel Right.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Toast notification -->
+<div id="toast" class="toast"></div>
+
+<!-- ============ NAV ============ -->
+<header class="nav">
+  <div class="nav-inner">
+    <button class="brand" data-nav="home">
+      <span class="brand-mark">B<span class="brand-dot">/</span>F</span>
+      <span class="brand-name">BOOST<em>FIT</em></span>
+    </button>
+
+    <nav class="nav-links" id="navLinks">
+      <button class="nav-link" data-nav="home">Home</button>
+      <button class="nav-link" data-nav="shop">Shop</button>
+      <button class="nav-link" data-nav="programs">Programs</button>
+      <button class="nav-link" data-nav="calculator">Macro Calc</button>
+      <button class="nav-link" data-nav="contact">Contact</button>
+    </nav>
+
+    <div class="nav-actions" id="navActions">
+      <!-- filled by script.js depending on auth state -->
+    </div>
+
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="app">
+
+  <!-- ============ HOME ============ -->
+  <section class="page active" id="page-home" data-page="home">
+    <div class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">STRENGTH · NUTRITION · DATA</p>
+        <h1 class="display-xl">Train with intent.<br>Fuel with precision.</h1>
+        <p class="hero-sub">BoostFit pairs structured strength programs with a macro-accurate protein shop —
+          and remembers your numbers so every session starts where the last one left off.</p>
+        <div class="hero-cta">
+          <button class="btn btn-accent" data-nav="programs">See programs</button>
+          <button class="btn btn-ghost" data-nav="calculator">Calculate your macros</button>
+        </div>
+        <div class="hero-stats">
+          <div><span class="stat-num">42g</span><span class="stat-label">avg protein / shake</span></div>
+          <div><span class="stat-num">6</span><span class="stat-label">structured programs</span></div>
+          <div><span class="stat-num">24/7</span><span class="stat-label">progress tracking</span></div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="ring-card">
+          <svg viewBox="0 0 220 220" class="macro-ring" id="heroRing">
+            <circle class="ring-track" cx="110" cy="110" r="92"></circle>
+            <circle class="ring-track" cx="110" cy="110" r="72"></circle>
+            <circle class="ring-track" cx="110" cy="110" r="52"></circle>
+            <circle class="ring-seg ring-protein" cx="110" cy="110" r="92"></circle>
+            <circle class="ring-seg ring-carbs" cx="110" cy="110" r="72"></circle>
+            <circle class="ring-seg ring-fat" cx="110" cy="110" r="52"></circle>
+          </svg>
+          <div class="ring-center">
+            <span class="ring-kcal" id="heroKcal">2,180</span>
+            <span class="ring-kcal-label">kcal target</span>
+          </div>
+          <ul class="ring-legend">
+            <li><i class="dot dot-protein"></i>Protein <b id="legendP">165g</b></li>
+            <li><i class="dot dot-carbs"></i>Carbs <b id="legendC">210g</b></li>
+            <li><i class="dot dot-fat"></i>Fat <b id="legendF">65g</b></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <section class="strip">
+      <h2 class="section-title">Why lifters stay</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <span class="feature-tag">SET 01</span>
+          <h3>Programs, not guesswork</h3>
+          <p>Every plan is built in real sets and rep ranges — push, pull, legs — with rest timers baked in.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-tag">SET 02</span>
+          <h3>Protein that hits targets</h3>
+          <p>Every product lists exact macros. Add to cart and your ring above updates instantly.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-tag">SET 03</span>
+          <h3>A dashboard that remembers</h3>
+          <p>Sign in once — your macro targets, cart, and program picks are saved to your account.</p>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <!-- ============ SHOP ============ -->
+  <section class="page" id="page-shop" data-page="shop">
+    <div class="page-head">
+      <p class="eyebrow">THE SHOP</p>
+      <h1 class="display-lg">Protein, measured exactly.</h1>
+      <p class="page-sub">Every tub and bar lists real macros. Add what fits your ring.</p>
+    </div>
+    <div class="product-grid" id="productGrid"></div>
+  </section>
+
+  <!-- ============ PROGRAMS ============ -->
+  <section class="page" id="page-programs" data-page="programs">
+    <div class="page-head">
+      <p class="eyebrow">THE PROGRAMS</p>
+      <h1 class="display-lg">Pick a split. Start today.</h1>
+      <p class="page-sub">Structured, in sets — tap a program to save it to your dashboard.</p>
+    </div>
+    <div class="program-list" id="programList"></div>
+  </section>
+
+  <!-- ============ CALCULATOR ============ -->
+  <section class="page" id="page-calculator" data-page="calculator">
+    <div class="page-head">
+      <p class="eyebrow">MACRO CALCULATOR</p>
+      <h1 class="display-lg">Know your numbers.</h1>
+      <p class="page-sub">Weight, activity, goal — get a daily calorie and macro target, saved to your dashboard when signed in.</p>
+    </div>
+
+    <div class="calc-wrap">
+      <form class="calc-form" id="calcForm">
+        <label>Weight (kg)
+          <input type="number" id="calcWeight" min="30" max="250" value="75" required>
+        </label>
+        <label>Height (cm)
+          <input type="number" id="calcHeight" min="120" max="230" value="175" required>
+        </label>
+        <label>Age
+          <input type="number" id="calcAge" min="14" max="90" value="27" required>
+        </label>
+        <label>Activity level
+          <select id="calcActivity">
+            <option value="1.2">Sedentary — desk job, little training</option>
+            <option value="1.375">Light — trains 1–3x/week</option>
+            <option value="1.55" selected>Moderate — trains 3–5x/week</option>
+            <option value="1.725">High — trains 6–7x/week</option>
+            <option value="1.9">Very high — physical job + training</option>
+          </select>
+        </label>
+        <label>Goal
+          <select id="calcGoal">
+            <option value="-500">Cut — lose fat</option>
+            <option value="0" selected>Maintain</option>
+            <option value="300">Bulk — build muscle</option>
+          </select>
+        </label>
+        <button type="submit" class="btn btn-accent full">Calculate my macros</button>
+      </form>
+
+      <div class="calc-result" id="calcResult">
+        <svg viewBox="0 0 220 220" class="macro-ring" id="calcRing">
+          <circle class="ring-track" cx="110" cy="110" r="92"></circle>
+          <circle class="ring-track" cx="110" cy="110" r="72"></circle>
+          <circle class="ring-track" cx="110" cy="110" r="52"></circle>
+          <circle class="ring-seg ring-protein" cx="110" cy="110" r="92"></circle>
+          <circle class="ring-seg ring-carbs" cx="110" cy="110" r="72"></circle>
+          <circle class="ring-seg ring-fat" cx="110" cy="110" r="52"></circle>
+        </svg>
+        <div class="ring-center">
+          <span class="ring-kcal" id="calcKcal">—</span>
+          <span class="ring-kcal-label">kcal / day</span>
+        </div>
+        <ul class="ring-legend">
+          <li><i class="dot dot-protein"></i>Protein <b id="calcP">—</b></li>
+          <li><i class="dot dot-carbs"></i>Carbs <b id="calcC">—</b></li>
+          <li><i class="dot dot-fat"></i>Fat <b id="calcF">—</b></li>
+        </ul>
+        <p class="calc-note" id="calcNote">Fill the form and calculate to see your target.</p>
+        <button class="btn btn-ghost full" id="saveCalcBtn" style="display:none">Save to my dashboard</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ACCOUNT (LOGIN / SIGNUP) ============ -->
+  <section class="page" id="page-account" data-page="account">
+    <div class="auth-wrap">
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Log in</button>
+        <button class="auth-tab" data-tab="signup">Sign up</button>
+      </div>
+
+      <form class="auth-form" id="loginForm">
+        <p class="eyebrow">WELCOME BACK</p>
+        <h2 class="display-md">Log in to BoostFit</h2>
+        <label>Email
+          <input type="email" id="loginEmail" required placeholder="you@example.com">
+        </label>
+        <label>Password
+          <input type="password" id="loginPassword" required placeholder="••••••••">
+        </label>
+        <button type="submit" class="btn btn-accent full">Log in</button>
+        <p class="auth-hint">No account yet? <button type="button" class="link-btn" data-tab="signup">Sign up</button></p>
+      </form>
+
+      <form class="auth-form hidden" id="signupForm">
+        <p class="eyebrow">JOIN BOOSTFIT</p>
+        <h2 class="display-md">Create your account</h2>
+        <label>Full name
+          <input type="text" id="signupName" required placeholder="Alex Rivera">
+        </label>
+        <label>Email
+          <input type="email" id="signupEmail" required placeholder="you@example.com">
+        </label>
+        <label>Password
+          <input type="password" id="signupPassword" required minlength="4" placeholder="At least 4 characters">
+        </label>
+        <button type="submit" class="btn btn-accent full">Create account</button>
+        <p class="auth-hint">Already have one? <button type="button" class="link-btn" data-tab="login">Log in</button></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============ DASHBOARD (personalized, requires login) ============ -->
+  <section class="page" id="page-dashboard" data-page="dashboard">
+    <div class="page-head">
+      <p class="eyebrow">YOUR DASHBOARD</p>
+      <h1 class="display-lg" id="dashGreeting">Welcome back.</h1>
+      <p class="page-sub" id="dashSub">Here's where you left off.</p>
+    </div>
+
+    <div class="dash-grid">
+      <div class="dash-card">
+        <h3>Your macro target</h3>
+        <div class="dash-ring-wrap">
+          <svg viewBox="0 0 220 220" class="macro-ring macro-ring-sm" id="dashRing">
+            <circle class="ring-track" cx="110" cy="110" r="92"></circle>
+            <circle class="ring-track" cx="110" cy="110" r="72"></circle>
+            <circle class="ring-track" cx="110" cy="110" r="52"></circle>
+            <circle class="ring-seg ring-protein" cx="110" cy="110" r="92"></circle>
+            <circle class="ring-seg ring-carbs" cx="110" cy="110" r="72"></circle>
+            <circle class="ring-seg ring-fat" cx="110" cy="110" r="52"></circle>
+          </svg>
+          <div class="ring-center">
+            <span class="ring-kcal" id="dashKcal">—</span>
+            <span class="ring-kcal-label">kcal</span>
+          </div>
+        </div>
+        <ul class="ring-legend">
+          <li><i class="dot dot-protein"></i>Protein <b id="dashP">—</b></li>
+          <li><i class="dot dot-carbs"></i>Carbs <b id="dashC">—</b></li>
+          <li><i class="dot dot-fat"></i>Fat <b id="dashF">—</b></li>
+        </ul>
+        <button class="btn btn-ghost full" data-nav="calculator">Recalculate</button>
+      </div>
+
+      <div class="dash-card">
+        <h3>Saved program</h3>
+        <div id="dashProgram" class="dash-empty">No program saved yet.</div>
+        <button class="btn btn-ghost full" data-nav="programs">Browse programs</button>
+      </div>
+
+      <div class="dash-card">
+        <h3>Cart summary</h3>
+        <div id="dashCart" class="dash-empty">Your cart is empty.</div>
+        <button class="btn btn-ghost full" data-nav="cart">Go to cart</button>
+      </div>
+
+      <div class="dash-card">
+        <h3>Account</h3>
+        <ul class="account-list">
+          <li><span>Name</span><b id="dashName">—</b></li>
+          <li><span>Email</span><b id="dashEmail">—</b></li>
+          <li><span>Member since</span><b id="dashSince">—</b></li>
+        </ul>
+        <button class="btn btn-danger full" id="logoutBtn">Log out</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CART ============ -->
+  <section class="page" id="page-cart" data-page="cart">
+    <div class="page-head">
+      <p class="eyebrow">YOUR CART</p>
+      <h1 class="display-lg">Ready to check out?</h1>
+      <p class="page-sub">Cart is saved to your account and stays put between visits.</p>
+    </div>
+    <div class="cart-wrap">
+      <div class="cart-items" id="cartItems"></div>
+      <div class="cart-summary">
+        <div class="cart-row"><span>Subtotal</span><b id="cartSubtotal">$0.00</b></div>
+        <div class="cart-row"><span>Shipping</span><b id="cartShipping">$0.00</b></div>
+        <div class="cart-row cart-total"><span>Total</span><b id="cartTotal">$0.00</b></div>
+        <button class="btn btn-accent full" id="checkoutBtn">Checkout</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section class="page" id="page-contact" data-page="contact">
+    <div class="page-head">
+      <p class="eyebrow">GET IN TOUCH</p>
+      <h1 class="display-lg">Questions? Coach's inbox is open.</h1>
+      <p class="page-sub">Messages are saved locally and you'll see a confirmation instantly.</p>
+    </div>
+    <form class="contact-form" id="contactForm">
+      <label>Name
+        <input type="text" id="contactName" required placeholder="Your name">
+      </label>
+      <label>Email
+        <input type="email" id="contactEmail" required placeholder="you@example.com">
+      </label>
+      <label>Message
+        <textarea id="contactMessage" rows="5" required placeholder="How can we help?"></textarea>
+      </label>
+      <button type="submit" class="btn btn-accent full">Send message</button>
+    </form>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <span class="brand-name">BOOST<em>FIT</em></span>
+    <p>© 2026 BoostFit. Built for lifters who track their numbers.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
